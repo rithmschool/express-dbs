@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Students</title></head>
+<body>
+  <h1>Students</h1>    
+  <ul>
+  {% for student in students %}
+    <li>
+      <a href="/student/{{ student.id }}">{{ student.fname }} {{ student.lname }}</a></li>
+  {% endfor %}
+  </ul>
+</body>
+</html>

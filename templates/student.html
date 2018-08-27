@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<head><title>{{ student.fname }} {{ student.lname }}</title></head>
+<body>
+  <h1>{{ student.fname }} {{ student.lname }}</h1> 
+  <ul>
+    {% for assignment in assignments %}
+      <li>{{ assignment.title }} got an {{ assignment.grade }}</li>
+    {% endfor %}
+  </ul>   
+</body>
+</html>
