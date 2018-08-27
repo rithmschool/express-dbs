@@ -380,7 +380,7 @@ Some things to notice:
 
 All three of these can be good approaches, depending on your style and needs.
 
-## Using Database Directly
+### Using Database Directly
 
 **Pros:**
 
@@ -411,7 +411,7 @@ All three of these can be good approaches, depending on your style and needs.
   is laid out: if you want to get the assignments for a student, you'd need
   to know how to join these tables yourself.
 
-## Using Knex as an Abstraction Layer
+### Using Knex as an Abstraction Layer
 
 **Pros:**
 
@@ -436,7 +436,7 @@ All three of these can be good approaches, depending on your style and needs.
   though this may violate the "you don't need to know SQL" or "you don't
   need to write SQL in the right flavor for your database" promises.)
 
-## Using an ORM with Sequelize
+### Using an ORM with Sequelize
 
 **Pros:**
 
