@@ -65,7 +65,8 @@ For connecting to the database, we'll show three different styles:
 
 ## Setup
 
-You can download the demonstration for this tutorial at http://___.
+You can view/clone the demonstration for this tutorial at
+https://github.com/rithmschool/express-dbs/.
 
 First, install the required Node libraries (Nunjucks, PG, Knex, and Sequelize):
 
