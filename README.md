@@ -3,7 +3,7 @@
 JavaScript is increasingly popular for developing backend servers,
 often using the Express library with Node. While many tutorials
 show using Node/Express with NoSQL databases, like MongoDB,
-these kind of databases are often not a good for common, relational
+these kind of databases are often not as good for common, relational
 data requirements. Many projects would benefit from a more scalable,
 transactional relational database.
 
@@ -26,7 +26,7 @@ grade.
 It will have two routes:
 
 - `/`: the homepage, which lists all students
-- `/student/[id]`, which shows info & assignments for that student
+- `/student/:id`, which shows info & assignments for that student
 
 Our data model will use two tables:
 
