@@ -45,7 +45,7 @@ Student.hasMany(Assignment)
 app.get('/', async function (req, res) {
     // show list of all students
     const students = await Student.findAll()
-    res.render('index.html', {students})
+    return res.render('index.html', {students})
 })
 
 app.get('/student/:id', async function (req, res) {
@@ -54,7 +54,7 @@ app.get('/student/:id', async function (req, res) {
     const student = (await Student.findById(id))
     console.log("Full name is", student.fullName)
     const assignments = await student.getAssignments()
-    res.render('student.html', {student, assignments})
+    return res.render('student.html', {student, assignments})
 })
 
 app.listen(3012, function() {

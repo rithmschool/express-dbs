@@ -86,27 +86,27 @@ The tables we've created are straightforward:
 
 ```sql
 CREATE TABLE students (
-    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    fname text NOT NULL,
-    lname text NOT NULL
+  id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  fname text NOT NULL,
+  lname text NOT NULL
 );
 
 INSERT INTO students (fname, lname) VALUES 
-    ('Sylvia', 'Plath'),
-    ('Anne', 'Sexton');
+  ('Sylvia', 'Plath'),
+  ('Anne', 'Sexton');
 
 CREATE TABLE assignments (
-    id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    student_id integer NOT NULL REFERENCES students,
-    title text NOT NULL,
-    grade integer NOT NULL
+  id integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  student_id integer NOT NULL REFERENCES students,
+  title text NOT NULL,
+  grade integer NOT NULL
 );
 
 INSERT INTO assignments (student_id, title, grade) VALUES 
-    (1, 'Essay #1', 85),
-    (1, 'Poem #1', 90),
-    (2, 'Short Story', 80),
-    (2, 'Long Poem', 87);
+  (1, 'Essay #1', 85),
+  (1, 'Poem #1', 90),
+  (2, 'Short Story', 80),
+  (2, 'Long Poem', 87);
 ```
 
 ## Our Templates
@@ -140,12 +140,16 @@ directory, and are very straightforward and plain:
 ```html
 <!DOCTYPE html>
 <html>
-<head><title>{{ student.fname }} {{ student.lname }}</title></head>
+<head>
+  <title>{{ student.fname }} {{ student.lname }}</title>
+</head>
 <body>
   <h1>{{ student.fname }} {{ student.lname }}</h1> 
   <ul>
     {% for assignment in assignments %}
-      <li>{{ assignment.title }} got an {{ assignment.grade }}</li>
+      <li>
+        {{ assignment.title }} got an {{ assignment.grade }}
+      </li>
     {% endfor %}
   </ul>   
 </body>
@@ -174,22 +178,25 @@ const client = new Client()
 client.connect()
 
 app.get('/', async function (req, res) {
-    // show list of all students
-    const students = (await client.query(
-            "SELECT id, fname, lname FROM students")).rows
-    res.render('index.html', {students})
+     // show list of all students
+    const rez = await client.query(
+            "SELECT id, fname, lname FROM students")
+    const students = rez.rows
+    return res.render('index.html', {students})
 })
 
 app.get('/student/:id', async function (req, res) {
     // show info about student & their assignments
     const id = req.params.id
-    const student = (await client.query(
+    const rez = await client.query(
             "SELECT fname, lname FROM students WHERE id=$1", 
-            [id])).rows[0]
-    const assignments = (await client.query(
+            [id])
+    const student = rez.rows[0]
+    const rez2 = await client.query(
             "SELECT title, grade FROM assignments WHERE student_id=$1",
-            [id])).rows
-    res.render('student.html', {student, assignments})
+            [id])
+    const assignments = rez2.rows
+    return res.render('student.html', {student, assignments})
 })
 
 app.listen(3010, function() {
@@ -238,24 +245,21 @@ const knex = require('knex')({
 
 app.get('/', async function (req, res) {
     // show list of all students
-    const students = (
-        await knex.select('id', 'fname', 'lname')
-                  .from('students'))
-    res.render('index.html', {students})
+    const students = await knex.select('id', 'fname', 'lname')
+                               .from('students')
+    return res.render('index.html', {students})
 })
 
 app.get('/student/:id', async function (req, res) {
     // show info about student & their assignments
     const id = req.params.id
-    const student = (
-        await knex.select('fname', 'lname')
-                  .from('students')
-                  .where('id', id))[0]
-    const assignments = (
-        await knex.select('title', 'grade')
-                  .from('assignments')
-                  .where('student_id', id))
-    res.render('student.html', {student, assignments})
+    const student = await knex.first('fname', 'lname')
+                              .from('students')
+                              .where('id', id)
+    const assignments = await knex.select('title', 'grade')
+                                  .from('assignments')
+                                  .where('student_id', id)
+    return res.render('student.html', {student, assignments})
 })
 
 app.listen(3011, function() {
@@ -335,7 +339,7 @@ Student.hasMany(Assignment)
 app.get('/', async function (req, res) {
     // show list of all students
     const students = await Student.findAll()
-    res.render('index.html', {students})
+    return res.render('index.html', {students})
 })
 
 app.get('/student/:id', async function (req, res) {
@@ -344,7 +348,7 @@ app.get('/student/:id', async function (req, res) {
     const student = (await Student.findById(id))
     console.log("Full name is", student.fullName)
     const assignments = await student.getAssignments()
-    res.render('student.html', {student, assignments})
+    return res.render('student.html', {student, assignments})
 })
 
 app.listen(3012, function() {
